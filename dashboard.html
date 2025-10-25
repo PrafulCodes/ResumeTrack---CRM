@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumeTrack | Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 to-indigo-50 min-h-screen flex font-sans">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gradient-to-b from-indigo-600 to-purple-700 text-white flex flex-col shadow-2xl">
+    <div class="px-6 py-6 border-b border-indigo-400 border-opacity-30">
+      <div class="flex items-center space-x-3">
+        <div class="bg-white bg-opacity-20 p-2 rounded-xl backdrop-blur-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <span class="text-2xl font-bold">ResumeTrack</span>
+      </div>
+    </div>
+
+    <nav class="flex-1 p-4 space-y-2">
+      <a href="dashboard.html" class="block bg-white bg-opacity-20 backdrop-blur-sm text-white rounded-xl px-4 py-3 font-semibold shadow-lg transform transition-all duration-200 hover:scale-105">
+        📊 Dashboard
+      </a>
+      <a href="candidates.html" class="block px-4 py-3 hover:bg-white hover:bg-opacity-10 rounded-xl transition-all duration-200 font-medium">
+        👥 Candidates
+      </a>
+      <a href="add-candidate.html" class="block px-4 py-3 hover:bg-white hover:bg-opacity-10 rounded-xl transition-all duration-200 font-medium">
+        ➕ Add Candidate
+      </a>
+      <a href="analytics.html" class="block px-4 py-3 hover:bg-white hover:bg-opacity-10 rounded-xl transition-all duration-200 font-medium">
+        📈 Analytics
+      </a>
+    </nav>
+
+    <button id="logoutBtn" class="m-4 px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-semibold shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-xl">
+      🚪 Logout
+    </button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 overflow-y-auto">
+    <!-- Top Bar -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800">Dashboard Overview</h1>
+        <p class="text-gray-500 mt-1">Track your recruitment pipeline at a glance</p>
+      </div>
+      <div class="bg-white px-6 py-3 rounded-xl shadow-lg border-2 border-indigo-100">
+        <p id="welcomeMsg" class="text-gray-700 font-semibold"></p>
+      </div>
+    </div>
+
+    <!-- Metric Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div class="bg-white p-6 rounded-2xl shadow-lg border-l-4 border-indigo-500 transform hover:scale-105 transition-all duration-200 hover:shadow-xl">
+        <div class="flex items-center space-x-4">
+          <div class="p-4 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-2xl text-white text-2xl shadow-md">
+            👥
+          </div>
+          <div>
+            <p class="text-sm text-gray-500 font-semibold">Total Candidates</p>
+            <h3 class="text-3xl font-bold text-gray-800">248</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-lg border-l-4 border-yellow-500 transform hover:scale-105 transition-all duration-200 hover:shadow-xl">
+        <div class="flex items-center space-x-4">
+          <div class="p-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl text-white text-2xl shadow-md">
+            🕵️
+          </div>
+          <div>
+            <p class="text-sm text-gray-500 font-semibold">In Interview</p>
+            <h3 class="text-3xl font-bold text-gray-800">42</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-lg border-l-4 border-purple-500 transform hover:scale-105 transition-all duration-200 hover:shadow-xl">
+        <div class="flex items-center space-x-4">
+          <div class="p-4 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl text-white text-2xl shadow-md">
+            📄
+          </div>
+          <div>
+            <p class="text-sm text-gray-500 font-semibold">Offers Made</p>
+            <h3 class="text-3xl font-bold text-gray-800">18</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-lg border-l-4 border-green-500 transform hover:scale-105 transition-all duration-200 hover:shadow-xl">
+        <div class="flex items-center space-x-4">
+          <div class="p-4 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl text-white text-2xl shadow-md">
+            ✅
+          </div>
+          <div>
+            <p class="text-sm text-gray-500 font-semibold">Hired This Month</p>
+            <h3 class="text-3xl font-bold text-gray-800">12</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Pie Chart -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg transform hover:shadow-xl transition-all duration-200">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-bold text-gray-800">Candidates by Stage</h2>
+          <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-3 py-1 rounded-lg">
+            <span class="text-sm font-semibold text-indigo-600">Live Data</span>
+          </div>
+        </div>
+        <canvas id="stagePieChart" height="200"></canvas>
+      </div>
+
+      <!-- Line Chart -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg transform hover:shadow-xl transition-all duration-200">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-bold text-gray-800">Hiring Trend (Last 6 Months)</h2>
+          <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-3 py-1 rounded-lg">
+            <span class="text-sm font-semibold text-indigo-600">📈 Trending</span>
+          </div>
+        </div>
+        <canvas id="trendLineChart" height="200"></canvas>
+      </div>
+    </div>
+
+    <!-- Quick Actions (New Feature) -->
+    <div class="mt-8 bg-gradient-to-r from-indigo-500 to-purple-600 p-8 rounded-2xl shadow-xl text-white">
+      <h2 class="text-2xl font-bold mb-4">Quick Actions</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="add-candidate.html" class="bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 p-4 rounded-xl transition-all duration-200 transform hover:scale-105 text-center">
+          <div class="text-3xl mb-2">➕</div>
+          <div class="font-semibold">Add Candidate</div>
+        </a>
+        <a href="candidates.html" class="bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 p-4 rounded-xl transition-all duration-200 transform hover:scale-105 text-center">
+          <div class="text-3xl mb-2">🔍</div>
+          <div class="font-semibold">Search Candidates</div>
+        </a>
+        <a href="analytics.html" class="bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 p-4 rounded-xl transition-all duration-200 transform hover:scale-105 text-center">
+          <div class="text-3xl mb-2">📊</div>
+          <div class="font-semibold">View Analytics</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Redirect if not logged in (using sessionStorage for consistency)
+    if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = 'index.html';
+    }
+
+    // Welcome message
+    const username = sessionStorage.getItem('username') || 'User';
+    document.getElementById('welcomeMsg').textContent = `Welcome, ${username} 👋`;
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    });
+
+    // Pie Chart with matching colors
+    const ctxPie = document.getElementById('stagePieChart');
+    new Chart(ctxPie, {
+      type: 'doughnut',
+      data: {
+        labels: ['Applied', 'Screening', 'Interview', 'Offer', 'Hired', 'Rejected'],
+        datasets: [{
+          data: [65, 48, 42, 18, 52, 23],
+          backgroundColor: [
+            '#9CA3AF', 
+            '#FBBF24', 
+            '#6366F1', 
+            '#8B5CF6', 
+            '#22C55E', 
+            '#EF4444'
+          ],
+          borderWidth: 0,
+          hoverOffset: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { 
+          legend: { 
+            position: 'bottom',
+            labels: {
+              padding: 15,
+              font: { size: 12 }
+            }
+          }
+        }
+      }
+    });
+
+    // Line Chart with gradient
+    const ctxLine = document.getElementById('trendLineChart');
+    const gradient = ctxLine.getContext('2d').createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
+    gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
+
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: ['May', 'June', 'July', 'August', 'September', 'October'],
+        datasets: [{
+          label: 'Hires',
+          data: [8, 12, 15, 10, 14, 12],
+          fill: true,
+          borderColor: '#6366F1',
+          backgroundColor: gradient,
+          tension: 0.4,
+          borderWidth: 3,
+          pointBackgroundColor: '#6366F1',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 5,
+          pointHoverRadius: 7
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { 
+          legend: { display: false }
+        },
+        scales: { 
+          y: { 
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

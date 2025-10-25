@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumeTrack | Candidates</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 to-indigo-50 min-h-screen flex font-sans">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gradient-to-b from-indigo-600 to-purple-700 text-white flex flex-col shadow-2xl">
+    <div class="px-6 py-6 border-b border-indigo-400 border-opacity-30">
+      <div class="flex items-center space-x-3">
+        <div class="bg-white bg-opacity-20 p-2 rounded-xl backdrop-blur-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <span class="text-2xl font-bold">ResumeTrack</span>
+      </div>
+    </div>
+
+    <nav class="flex-1 p-4 space-y-2">
+      <a href="dashboard.html" class="block px-4 py-3 hover:bg-white hover:bg-opacity-10 rounded-xl transition-all duration-200 font-medium">
+        📊 Dashboard
+      </a>
+      <a href="candidates.html" class="block bg-white bg-opacity-20 backdrop-blur-sm text-white rounded-xl px-4 py-3 font-semibold shadow-lg transform transition-all duration-200 hover:scale-105">
+        👥 Candidates
+      </a>
+      <a href="add-candidate.html" class="block px-4 py-3 hover:bg-white hover:bg-opacity-10 rounded-xl transition-all duration-200 font-medium">
+        ➕ Add Candidate
+      </a>
+      <a href="analytics.html" class="block px-4 py-3 hover:bg-white hover:bg-opacity-10 rounded-xl transition-all duration-200 font-medium">
+        📈 Analytics
+      </a>
+    </nav>
+
+    <button id="logoutBtn" class="m-4 px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-semibold shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-xl">
+      🚪 Logout
+    </button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 overflow-y-auto">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800">Candidates</h1>
+        <p class="text-gray-500 mt-1">Manage and track all your candidates</p>
+      </div>
+      <div class="bg-white px-6 py-3 rounded-xl shadow-lg border-2 border-indigo-100">
+        <p id="welcomeMsg" class="text-gray-700 font-semibold"></p>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white p-4 rounded-xl shadow-lg border-l-4 border-indigo-500 transform hover:scale-105 transition-all duration-200">
+        <p class="text-sm text-gray-500 font-semibold">Total</p>
+        <p class="text-2xl font-bold text-gray-800" id="totalCount">0</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-lg border-l-4 border-yellow-500 transform hover:scale-105 transition-all duration-200">
+        <p class="text-sm text-gray-500 font-semibold">Interview</p>
+        <p class="text-2xl font-bold text-gray-800" id="interviewCount">0</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-lg border-l-4 border-purple-500 transform hover:scale-105 transition-all duration-200">
+        <p class="text-sm text-gray-500 font-semibold">Offers</p>
+        <p class="text-2xl font-bold text-gray-800" id="offerCount">0</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-lg border-l-4 border-green-500 transform hover:scale-105 transition-all duration-200">
+        <p class="text-sm text-gray-500 font-semibold">Hired</p>
+        <p class="text-2xl font-bold text-gray-800" id="hiredCount">0</p>
+      </div>
+    </div>
+
+    <!-- Search & Filter -->
+    <div class="bg-white p-6 rounded-2xl shadow-lg mb-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="relative w-full sm:w-2/3">
+          <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg">🔍</span>
+          <input 
+            id="searchInput" 
+            type="text" 
+            placeholder="Search by name or email..." 
+            class="pl-12 pr-4 py-3 w-full border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-500 transition-colors duration-200"
+          >
+        </div>
+        <select 
+          id="statusFilter" 
+          class="px-4 py-3 w-full sm:w-auto border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-500 transition-colors duration-200 bg-white font-semibold"
+        >
+          <option value="all">🔵 All Status</option>
+          <option value="applied">📋 Applied</option>
+          <option value="screening">🔍 Screening</option>
+          <option value="interview">🕵️ Interview</option>
+          <option value="offer">📄 Offer</option>
+          <option value="hired">✅ Hired</option>
+          <option value="rejected">❌ Rejected</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+            <tr>
+              <th class="px-6 py-4 font-bold">Name</th>
+              <th class="px-6 py-4 font-bold">Email</th>
+              <th class="px-6 py-4 font-bold">Position</th>
+              <th class="px-6 py-4 font-bold">Status</th>
+              <th class="px-6 py-4 font-bold text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="candidateTableBody" class="divide-y divide-gray-100">
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden text-center py-16 px-4">
+        <div class="text-6xl mb-4">🔍</div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">No candidates found</h3>
+        <p class="text-gray-500 mb-6">Try adjusting your search or filter criteria</p>
+        <a href="add-candidate.html" class="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5">
+          ➕ Add New Candidate
+        </a>
+      </div>
+    </div>
+
+    <!-- Action Modal -->
+    <div id="actionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm">
+      <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 transform transition-all duration-300">
+        <div class="flex items-center space-x-3 mb-6">
+          <div id="modalIcon" class="text-4xl"></div>
+          <h3 id="modalTitle" class="text-2xl font-bold text-gray-800"></h3>
+        </div>
+        <div id="modalContent" class="text-gray-600 mb-6"></div>
+        <div class="flex gap-3">
+          <button id="modalConfirm" class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5">
+            Confirm
+          </button>
+          <button id="modalCancel" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-300 transition-colors duration-200">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Authentication check (using sessionStorage for consistency)
+    if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = 'index.html';
+    }
+    
+    const username = sessionStorage.getItem('username') || 'User';
+    document.getElementById('welcomeMsg').textContent = `Welcome, ${username} 👋`;
+
+    // Sample Data + Session Data
+    let candidates = [
+      { id: 1, name: "Ravi Kumar", email: "ravi.k@example.com", position: "Frontend Developer", status: "interview" },
+      { id: 2, name: "Priya Sharma", email: "priya.s@example.com", position: "Backend Engineer", status: "applied" },
+      { id: 3, name: "Amit Patel", email: "amitp@example.com", position: "Product Designer", status: "offer" },
+      { id: 4, name: "Sneha Mehta", email: "sneham@example.com", position: "QA Analyst", status: "hired" },
+      { id: 5, name: "Arjun Nair", email: "arjun.n@example.com", position: "Data Scientist", status: "rejected" },
+    ];
+
+    // Load candidates from session storage if available
+    const savedCandidates = JSON.parse(sessionStorage.getItem('candidates') || '[]');
+    if (savedCandidates.length > 0) {
+      candidates = [...candidates, ...savedCandidates];
+    }
+
+    const tableBody = document.getElementById('candidateTableBody');
+    const emptyState = document.getElementById('emptyState');
+
+    function updateStats(data) {
+      document.getElementById('totalCount').textContent = data.length;
+      document.getElementById('interviewCount').textContent = data.filter(c => c.status === 'interview').length;
+      document.getElementById('offerCount').textContent = data.filter(c => c.status === 'offer').length;
+      document.getElementById('hiredCount').textContent = data.filter(c => c.status === 'hired').length;
+    }
+
+    function renderTable(data) {
+      tableBody.innerHTML = '';
+      
+      if (data.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      
+      emptyState.classList.add('hidden');
+      
+      data.forEach(c => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 transition-all duration-200';
+        row.innerHTML = `
+          <td class="px-6 py-4">
+            <div class="flex items-center space-x-3">
+              <div class="bg-gradient-to-br from-indigo-400 to-purple-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg">
+                ${c.name.charAt(0)}
+              </div>
+              <span class="font-semibold text-gray-800">${c.name}</span>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-gray-600">${c.email}</td>
+          <td class="px-6 py-4 text-gray-600">${c.position}</td>
+          <td class="px-6 py-4">
+            <span class="px-3 py-1.5 text-xs font-semibold rounded-xl ${getStatusColor(c.status)}">${getStatusLabel(c.status)}</span>
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex justify-center gap-2">
+              <button onclick="viewCandidate(${c.id})" class="bg-indigo-100 text-indigo-600 hover:bg-indigo-200 p-2 rounded-lg transition-colors duration-200" title="View">
+                👁️
+              </button>
+              <button onclick="editCandidate(${c.id})" class="bg-yellow-100 text-yellow-600 hover:bg-yellow-200 p-2 rounded-lg transition-colors duration-200" title="Edit">
+                ✏️
+              </button>
+              <button onclick="deleteCandidate(${c.id})" class="bg-red-100 text-red-600 hover:bg-red-200 p-2 rounded-lg transition-colors duration-200" title="Delete">
+                🗑️
+              </button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function getStatusColor(status) {
+      const colors = {
+        applied: "bg-gray-200 text-gray-800",
+        screening: "bg-blue-100 text-blue-700",
+        interview: "bg-yellow-100 text-yellow-700",
+        offer: "bg-purple-100 text-purple-700",
+        hired: "bg-green-100 text-green-700",
+        rejected: "bg-red-100 text-red-700"
+      };
+      return colors[status] || "bg-gray-100 text-gray-700";
+    }
+
+    function getStatusLabel(status) {
+      const labels = {
+        applied: "📋 Applied",
+        screening: "🔍 Screening",
+        interview: "🕵️ Interview",
+        offer: "📄 Offer",
+        hired: "✅ Hired",
+        rejected: "❌ Rejected"
+      };
+      return labels[status] || status;
+    }
+
+    // Action functions
+    window.viewCandidate = (id) => {
+      const candidate = candidates.find(c => c.id === id);
+      if (!candidate) return;
+      
+      showModal('👁️', 'Candidate Details', `
+        <div class="space-y-3">
+          <p><strong>Name:</strong> ${candidate.name}</p>
+          <p><strong>Email:</strong> ${candidate.email}</p>
+          <p><strong>Position:</strong> ${candidate.position}</p>
+          <p><strong>Status:</strong> ${getStatusLabel(candidate.status)}</p>
+        </div>
+      `, () => {
+        hideModal();
+      });
+    };
+
+    window.editCandidate = (id) => {
+      showModal('✏️', 'Edit Feature', `
+        <p>Editing functionality would be implemented here. This would open a form to modify candidate details.</p>
+      `, () => {
+        hideModal();
+      });
+    };
+
+    window.deleteCandidate = (id) => {
+      const candidate = candidates.find(c => c.id === id);
+      if (!candidate) return;
+      
+      showModal('🗑️', 'Delete Candidate', `
+        <p>Are you sure you want to delete <strong>${candidate.name}</strong>?</p>
+        <p class="text-sm text-red-600 mt-2">This action cannot be undone.</p>
+      `, () => {
+        candidates = candidates.filter(c => c.id !== id);
+        sessionStorage.setItem('candidates', JSON.stringify(candidates.filter(c => c.id > 5)));
+        renderTable(candidates);
+        updateStats(candidates);
+        hideModal();
+      });
+    };
+
+    function showModal(icon, title, content, onConfirm) {
+      document.getElementById('modalIcon').textContent = icon;
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalContent').innerHTML = content;
+      document.getElementById('actionModal').classList.remove('hidden');
+      
+      const confirmBtn = document.getElementById('modalConfirm');
+      const cancelBtn = document.getElementById('modalCancel');
+      
+      confirmBtn.onclick = onConfirm;
+      cancelBtn.onclick = hideModal;
+    }
+
+    function hideModal() {
+      document.getElementById('actionModal').classList.add('hidden');
+    }
+
+    // Initial render
+    renderTable(candidates);
+    updateStats(candidates);
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const search = e.target.value.toLowerCase();
+      const statusVal = document.getElementById('statusFilter').value;
+      let filtered = candidates.filter(c =>
+        c.name.toLowerCase().includes(search) ||
+        c.email.toLowerCase().includes(search)
+      );
+      if (statusVal !== 'all') {
+        filtered = filtered.filter(c => c.status === statusVal);
+      }
+      renderTable(filtered);
+    });
+
+    // Filter functionality
+    document.getElementById('statusFilter').addEventListener('change', (e) => {
+      const val = e.target.value;
+      const searchVal = document.getElementById('searchInput').value.toLowerCase();
+      let filtered = candidates;
+      
+      if (searchVal) {
+        filtered = filtered.filter(c =>
+          c.name.toLowerCase().includes(searchVal) ||
+          c.email.toLowerCase().includes(searchVal)
+        );
+      }
+      
+      if (val !== 'all') {
+        filtered = filtered.filter(c => c.status === val);
+      }
+      
+      renderTable(filtered);
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    });
+
+    // Close modal on outside click
+    document.getElementById('actionModal').addEventListener('click', (e) => {
+      if (e.target.id === 'actionModal') {
+        hideModal();
+      }
+    });
+  </script>
+
+</body>
+</html>
