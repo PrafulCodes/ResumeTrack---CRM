@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ResumeTrack | Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- ⚠️ IMPORTANT: Load Chart.js BEFORE closing head tag -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 </head>
 
 <body class="bg-gradient-to-br from-gray-50 to-indigo-50 min-h-screen flex font-sans">
@@ -132,7 +133,7 @@
       </div>
     </div>
 
-    <!-- Quick Actions (New Feature) -->
+    <!-- Quick Actions -->
     <div class="mt-8 bg-gradient-to-r from-indigo-500 to-purple-600 p-8 rounded-2xl shadow-xl text-white">
       <h2 class="text-2xl font-bold mb-4">Quick Actions</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -152,8 +153,12 @@
     </div>
   </main>
 
+  <!-- ⚠️ CRITICAL: Script MUST be at the END of body -->
   <script>
-    // Redirect if not logged in (using sessionStorage for consistency)
+    // Check if Chart.js loaded
+    console.log('Chart.js loaded?', typeof Chart !== 'undefined');
+
+    // Redirect if not logged in
     if (sessionStorage.getItem('isLoggedIn') !== 'true') {
       window.location.href = 'index.html';
     }
@@ -168,83 +173,97 @@
       window.location.href = 'index.html';
     });
 
-    // Pie Chart with matching colors
-    const ctxPie = document.getElementById('stagePieChart');
-    new Chart(ctxPie, {
-      type: 'doughnut',
-      data: {
-        labels: ['Applied', 'Screening', 'Interview', 'Offer', 'Hired', 'Rejected'],
-        datasets: [{
-          data: [65, 48, 42, 18, 52, 23],
-          backgroundColor: [
-            '#9CA3AF', 
-            '#FBBF24', 
-            '#6366F1', 
-            '#8B5CF6', 
-            '#22C55E', 
-            '#EF4444'
-          ],
-          borderWidth: 0,
-          hoverOffset: 10
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { 
-          legend: { 
-            position: 'bottom',
-            labels: {
-              padding: 15,
-              font: { size: 12 }
-            }
-          }
-        }
-      }
-    });
-
-    // Line Chart with gradient
-    const ctxLine = document.getElementById('trendLineChart');
-    const gradient = ctxLine.getContext('2d').createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
-    gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
-
-    new Chart(ctxLine, {
-      type: 'line',
-      data: {
-        labels: ['May', 'June', 'July', 'August', 'September', 'October'],
-        datasets: [{
-          label: 'Hires',
-          data: [8, 12, 15, 10, 14, 12],
-          fill: true,
-          borderColor: '#6366F1',
-          backgroundColor: gradient,
-          tension: 0.4,
-          borderWidth: 3,
-          pointBackgroundColor: '#6366F1',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
-          pointRadius: 5,
-          pointHoverRadius: 7
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { 
-          legend: { display: false }
-        },
-        scales: { 
-          y: { 
-            beginAtZero: true,
-            grid: {
-              color: 'rgba(0, 0, 0, 0.05)'
-            }
+    // Wait for DOM to be ready
+    window.addEventListener('DOMContentLoaded', function() {
+      
+      // Pie Chart
+      const ctxPie = document.getElementById('stagePieChart');
+      if (ctxPie && typeof Chart !== 'undefined') {
+        new Chart(ctxPie, {
+          type: 'doughnut',
+          data: {
+            labels: ['Applied', 'Screening', 'Interview', 'Offer', 'Hired', 'Rejected'],
+            datasets: [{
+              data: [65, 48, 42, 18, 52, 23],
+              backgroundColor: [
+                '#9CA3AF', 
+                '#FBBF24', 
+                '#6366F1', 
+                '#8B5CF6', 
+                '#22C55E', 
+                '#EF4444'
+              ],
+              borderWidth: 0,
+              hoverOffset: 10
+            }]
           },
-          x: {
-            grid: {
-              display: false
+          options: {
+            responsive: true,
+            plugins: { 
+              legend: { 
+                position: 'bottom',
+                labels: {
+                  padding: 15,
+                  font: { size: 12 }
+                }
+              }
             }
           }
-        }
+        });
+        console.log('✅ Pie chart created');
+      } else {
+        console.error('❌ Chart.js not loaded or canvas not found');
+      }
+
+      // Line Chart
+      const ctxLine = document.getElementById('trendLineChart');
+      if (ctxLine && typeof Chart !== 'undefined') {
+        const gradient = ctxLine.getContext('2d').createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
+        gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
+
+        new Chart(ctxLine, {
+          type: 'line',
+          data: {
+            labels: ['May', 'June', 'July', 'August', 'September', 'October'],
+            datasets: [{
+              label: 'Hires',
+              data: [8, 12, 15, 10, 14, 12],
+              fill: true,
+              borderColor: '#6366F1',
+              backgroundColor: gradient,
+              tension: 0.4,
+              borderWidth: 3,
+              pointBackgroundColor: '#6366F1',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              pointRadius: 5,
+              pointHoverRadius: 7
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { 
+              legend: { display: false }
+            },
+            scales: { 
+              y: { 
+                beginAtZero: true,
+                grid: {
+                  color: 'rgba(0, 0, 0, 0.05)'
+                }
+              },
+              x: {
+                grid: {
+                  display: false
+                }
+              }
+            }
+          }
+        });
+        console.log('✅ Line chart created');
+      } else {
+        console.error('❌ Chart.js not loaded or canvas not found');
       }
     });
   </script>
